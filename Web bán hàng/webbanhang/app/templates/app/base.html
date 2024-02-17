@@ -17,6 +17,10 @@
         <script src="{%static 'app/js/owl.carousel.min.js' %}"></script>
         <script src="{%static 'app/js/all.min.js' %}"></script>
         <script src="{%static 'app/js/myscript.js' %}"></script>
+        <script type="text/javascript">
+          var user = '{{request.user}}'
+        </script> 
+
         <title>Trang chủ</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,7 +73,7 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
+                    <li><a class="dropdown-item" href="cart">Đơn hàng</a></li>
                     <li><a class="dropdown-item" href="#">Thoát</a></li>
                   </ul>
                 </li>
@@ -97,6 +101,6 @@
             Địa chỉ
             Chi nhánh
           </footer>
-          <script src="" async defer></script>
+          <script src="{%static 'app/js/cart.js' %}"></script>
     </body>
 </html>
