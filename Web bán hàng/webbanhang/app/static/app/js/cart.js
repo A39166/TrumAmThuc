@@ -18,7 +18,7 @@ for(i=0; i <updateBtns.length;i++){
 
 function updateUserOrder(productId, action){
     console.log('user loggin in, success add')
-    var url = 'update_item/'
+    var url = '/update_item/'
     fetch(url,{
         method: 'POST',
         headers:{
@@ -32,5 +32,6 @@ function updateUserOrder(productId, action){
     })
     .then((data)=>{
         console.log('data',data)
+        location.reload()
     })
 }
