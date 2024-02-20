@@ -5,6 +5,7 @@ import json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
@@ -141,23 +142,42 @@ def logoutPage(request):
     logout(request)
     return redirect('login')
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def category(request):
-    categories = Category.objects.filter(is_sub = False)
-    active_category = request.GET.get('category','')
+    categories = Category.objects.filter(is_sub=False)
+    active_category = request.GET.get('category', '')
     if active_category:
-        products = Product.objects.filter(category__slug = active_category)
+        products = Product.objects.filter(category__slug=active_category)
+    else:
+        products = Product.objects.all()
+
+    # Phân trang
+    paginator = Paginator(products, 4)  # Số sản phẩm trên mỗi trang
+    page = request.GET.get('page')
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # Nếu page không phải là số nguyên, hiển thị trang đầu tiên.
+        products = paginator.page(1)
+    except EmptyPage:
+        # Nếu page lớn hơn số trang có sẵn, hiển thị trang cuối cùng.
+        products = paginator.page(paginator.num_pages)
+
     if request.user.is_authenticated:
         customer = request.user
-        order, created = Order.objects.get_or_create(customer=customer,complete=False)
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
         user_not_login = "hidden"
         user_login = "show"
     else:
         items = []
-        order = {'get_cart_items':0,'get_cart_totalprice':0}
+        order = {'get_cart_items': 0, 'get_cart_totalprice': 0}
         cartItems = order['get_cart_items']
         user_not_login = "show"
         user_login = "hidden"
-    context  = {'categories':categories, 'products' : products,'active_category':active_category,'cartItems':cartItems,'user_not_login':user_not_login,'user_login':user_login}
-    return render(request,'app/category.html',context)
+    context = {'categories': categories, 'products': products, 'active_category': active_category,
+               'cartItems': cartItems, 'user_not_login': user_not_login, 'user_login': user_login}
+    return render(request, 'app/category.html', context)

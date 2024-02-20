@@ -1,33 +1,43 @@
 {% extends "app/base.html" %}
 {% load static %}
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width",initial-scale=1>
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        {% block search %}
-        
+{% block content %}
+    <div class="container">
         <div class="row">
-            {%for product in products %}
-            <div class ="col-lg-3">
-              <img class ="thumbnail" src ="{{product.ImageURL}}">
-              <div class="box-element product">
-                <h6><strong>{{product.name}}</strong></h6>
-                <hr>
-        
-                <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to cart</button>
-                <a class="btn btn-outline-success" href="#">View</a>
-                <h3 style="display: inline-block; float: right"><strong>{{product.price | floatformat:2}}</strong></h3>
-              </div>
+            <div class="col-md-12">
+                {% block search %}
+                    <div class="row">
+                        {% for product in products %}
+                            <div class="col-lg-3">
+                                <img class="thumbnail" src="{{ product.ImageURL }}">
+                                <div class="box-element product">
+                                    <h6><strong>{{ product.name }}</strong></h6>
+                                    <hr>
+                                    <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to cart</button>
+                                    <a class="btn btn-outline-success" href="#">View</a>
+                                    <h3 style="display: inline-block; float: right"><strong>{{ product.price | floatformat:2 }}</strong></h3>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Phân trang -->
+                    <nav aria-label="Page navigation" class="pagination-container">
+                      <ul class="pagination justify-content-center">
+                            {% if products.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">previous</a></li>
+                            {% endif %}
+
+                            <li class="page-item disabled"><span class="page-link">Page {{ products.number }} of {{ products.paginator.num_pages }}.</span></li>
+
+                            {% if products.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">next</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ products.paginator.num_pages }}">last &raquo;</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endblock search %}
             </div>
-            {% endfor %}
-          </div>
-        {% endblock search %}
-    </body>
-</html>
+        </div>
+    </div>
+{% endblock content %}
