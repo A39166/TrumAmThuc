@@ -153,7 +153,7 @@ def category(request):
         products = Product.objects.all()
 
     # Phân trang
-    paginator = Paginator(products, 4)  # Số sản phẩm trên mỗi trang
+    paginator = Paginator(products, 8)  # Số sản phẩm trên mỗi trang
     page = request.GET.get('page')
 
     try:
