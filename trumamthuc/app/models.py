@@ -22,7 +22,6 @@ class Product(models.Model):
     category = models.ManyToManyField(Category,related_name='product')
     name = models.CharField(max_length=200,null=True)
     price = models.IntegerField()
-    # digital = models.BooleanField(default=False,null=True,blank=False)
     image = models.ImageField(null=True,blank=True)
     def __str__(self):
         return self.name
@@ -66,9 +65,11 @@ class OrderItem(models.Model):
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(User,on_delete=models.SET_NULL,blank=True,null=True)
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
-    city = models.CharField(max_length=200,null=True)
+    address = models.CharField(max_length=200,null=True)
     state = models.CharField(max_length=200,null=True)
     mobile = models.CharField(max_length=200,null=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=200,null=True)
+    email = models.CharField(max_length=200,null=True)
     def __str__(self):
-        return self.address
+        return str(self.address)
