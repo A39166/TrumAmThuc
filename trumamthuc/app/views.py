@@ -384,6 +384,8 @@ def updateItem_api(request):
     orderItem.save()
     if orderItem.quantity <= 0:
         orderItem.delete()
+    if action == 'delete1':
+        orderItem.delete()
     return JsonResponse('added', safe=False)
 
 @api_view(['POST', 'GET'])
