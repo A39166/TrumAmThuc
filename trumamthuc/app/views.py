@@ -419,9 +419,12 @@ def loginPage_api(request):
                 messages.info(request, 'Tên đăng nhập hoặc Mật khẩu không đúng')
     else:
         serializer = LoginSerializer()
+    user_not_login = "show"
+    user_login = "hidden"
     categories = Category.objects.filter(is_sub=False)
     active_category = request.GET.get('category', '')
-    context = {'active_category': active_category, 'categories': categories, 'serializer': serializer}
+    context = {'active_category': active_category, 'categories': categories, 'serializer': serializer,
+               'user_not_login': user_not_login, 'user_login': user_login}
     return render(request, 'app/login.html', context)
 
 def logoutPage_api(request):
