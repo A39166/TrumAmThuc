@@ -34,7 +34,7 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 class SearchSerializer(serializers.Serializer):
-    searched = serializers.CharField(max_length=100)
+    searched = serializers.CharField(max_length=100,required=True)
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
