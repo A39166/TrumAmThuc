@@ -28,11 +28,6 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(style={'input_type': 'password'})
 
-    def validate(self, data):
-        username = data.get('username')
-        password = data.get('password')
-        return data
-
 class SearchSerializer(serializers.Serializer):
     searched = serializers.CharField(max_length=100,required=True)
 
@@ -54,7 +49,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         # Kiểm tra xem hai trường mật khẩu có giống nhau không
         if attrs['password1'] != attrs['password2']:
-            raise serializers.ValidationError("Passwords do not match")
+            raise serializers.ValidationError("Password không giống nhau!")
         return attrs
 
     def create(self, validated_data):
