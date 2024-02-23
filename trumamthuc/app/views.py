@@ -343,6 +343,14 @@ def search_api(request):
             searched = serializer.validated_data.get("searched")
             # Tìm kiếm sản phẩm trong cơ sở dữ liệu
             keys = Product.objects.filter(name__contains=searched)
+            paginator = Paginator(keys, 8)  # Chia danh sách sản phẩm thành các trang, mỗi trang có tối đa 10 sản phẩm
+            page = request.GET.get('page')  # Lấy số trang từ yêu cầu GET
+            try:
+                keys = paginator.page(page)
+            except PageNotAnInteger:
+                keys = paginator.page(1)
+            except EmptyPage:
+                keys = paginator.page(paginator.num_pages)
             if request.user.is_authenticated:
                     customer = request.user
                     order, created = Order.objects.get_or_create(customer=customer,complete=False)
